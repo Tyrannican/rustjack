@@ -6,6 +6,7 @@ authors = ["Graham Keenan <graham.keenan@outlook.com>"]
 license = "MIT"
 description = "Blackjack Game Client for NakedMCSE and VictoriqueMoe Blackjack servers"
 readme = "README.md"
+repository = "https://github.com/Tyrannican/rustjack"
 
 [dependencies]
 anyhow = "1.0.89"
