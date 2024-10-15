@@ -7,6 +7,7 @@ pub enum ApiResponse {
     Stats(StatsResponse),
     History(Vec<ResponseMsg>),
     Invalid(BadRequest),
+    Delete(bool),
 }
 
 #[derive(Deserialize, Debug)]
@@ -53,6 +54,13 @@ impl std::fmt::Display for ApiResponse {
                 }
 
                 Ok(())
+            }
+            Self::Delete(deleted) => {
+                if *deleted {
+                    writeln!(f, "History deleted!")
+                } else {
+                    writeln!(f, "History not deleted")
+                }
             }
         }
     }

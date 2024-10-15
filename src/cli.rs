@@ -43,6 +43,11 @@ pub enum Command {
 
     /// Delete Game history for the current device
     Delete {
+        /// Token for the game to delete (omit to delete all games)
+        #[arg(short, long)]
+        token: Option<String>,
+
+        /// Flag to pass to ensure the call is made
         #[arg(short, long)]
         sure: bool,
     },

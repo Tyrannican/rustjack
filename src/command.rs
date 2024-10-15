@@ -23,7 +23,7 @@ impl GameClient {
             Command::Stay { token } => self.stay(token).await?,
             Command::Stats => self.stats().await?,
             Command::History { start_date } => self.history(start_date).await?,
-            Command::Delete { sure } => self.delete_history(sure).await?,
+            Command::Delete { sure, token } => self.delete_history(sure, token).await?,
         }
 
         Ok(())
@@ -114,17 +114,19 @@ impl GameClient {
         Ok(())
     }
 
-    async fn delete_history(&self, sure: bool) -> Result<()> {
+    async fn delete_history(&self, sure: bool, token: Option<String>) -> Result<()> {
         if !sure {
             println!("Sure flag not set, not deleting history");
         }
 
-        self.client
-            .post(self.build_url("delete?sure=true"))
-            .send()
-            .await?;
+        let url = match token {
+            Some(tkn) => self.build_url(format!("delete/{tkn}?sure=true")),
+            None => self.build_url("delete?sure=true"),
+        };
 
-        println!("Deleted history!");
+        let resp: ApiResponse = self.client.delete(url).send().await?.json().await?;
+        println!("{resp}");
+
         Ok(())
     }
 }
